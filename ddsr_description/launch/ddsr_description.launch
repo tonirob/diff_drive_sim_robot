@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<launch>
+
+	<!-- Input arguments -->
+	<arg name="rviz"  default="true" /> <!-- Enable/disable visualization -->
+	<arg name="namespace" default="ddsr" />
+	<arg name="use_gui" default="false" />
+
+	<!-- Convert xacro to urdf and set robot_description parameter in the parameter server -->
+	<param  name="robot_description"
+		command="$(find xacro)/xacro $(find ddsr_description)/urdf/ddsr.xacro namespace:=$(arg namespace)" />
+
+	<!-- Run joint state publisher (Gets robot_description from parameter server)-->
+	<node pkg="joint_state_publisher"
+		type="joint_state_publisher"
+		name="joint_state_publisher" >
+		<param name="rate" value="50" />
+		<param name="use_gui" value="$(arg use_gui)" />
+		<rosparam param="source_list">[/device/joint_states]</rosparam>
+	</node>
+
+	<!-- Run state publisher (Gets robot_description from parameter server)-->
+	<node pkg="robot_state_publisher"
+		type="robot_state_publisher"
+		name="robot_state_publisher" >
+		<param name="publish_frequency" value="50" />
+	</node>
+
+	<!-- Run rviz node -->
+	<group if="$(arg rviz)">
+		<node
+			pkg="rviz"
+			type="rviz"
+			name="model_rviz"
+			args="-d $(find ddsr_description)/rviz/ddsr_description.rviz">
+		</node>
+	</group>
+
+</launch>
