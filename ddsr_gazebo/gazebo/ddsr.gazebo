@@ -65,5 +65,14 @@
     </plugin>
 </gazebo>
 
+
+<!-- ROS control for actuated joints -->
+<gazebo>
+	<plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+		<robotNamespace>/${gazebo_namespace}</robotNamespace>
+	</plugin>
+</gazebo>
+
+
 </xacro:macro>
 </robot>

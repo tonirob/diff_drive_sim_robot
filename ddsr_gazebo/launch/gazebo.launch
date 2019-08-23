@@ -4,12 +4,14 @@
 
     <!-- Input arguments -->
     <arg name="rviz" default="true" /> <!-- Enable/disable rviz visualization -->
+	<arg name="namespace" default="ddsr" />
 	<arg name="gazebo_gui" default="true" />  <!-- Enable/disable Gazebo visualization -->
 	<arg name="world_name" default="ground_plane" /> <!-- world file name -->
 
 	<!-- Robot description -->
 	<include file="$(find ddsr_description)/launch/description.launch">
 		<arg name="rviz" value="false"/>
+		<arg name="namespace" value="$(arg namespace)"/>
 	</include>
 
     <!-- Launch a world in Gazebo simulator-->
