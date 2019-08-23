@@ -2,7 +2,6 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
 <xacro:macro name="gazebo_include" params="gazebo_namespace">
-
 <gazebo>
     <static>0</static>
 </gazebo>
@@ -42,6 +41,16 @@
     <material>Gazebo/Grey</material>
 </gazebo>
 
+
+<!-- ~~~~~~~~~~~~~~~~~ Joints ~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<gazebo reference="platform_2_left_wheel">
+	<provideFeedback>true</provideFeedback>
+</gazebo>
+<gazebo reference="platform_2_right_wheel">
+	<provideFeedback>true</provideFeedback>
+</gazebo>
+
+
 <!-- ~~~~~~~~~~~~~~~~~ PLUGINS ~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 <!--     Ground Truth -->
@@ -53,13 +62,6 @@
         <gaussianNoise>0.0</gaussianNoise>
         <alwaysOn>true</alwaysOn>
         <updateRate>20.0</updateRate>
-    </plugin>
-</gazebo>
-
-<!--     Joint control (steering and driving) -->
-<gazebo>
-    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
-        <robotNamespace>/${gazebo_namespace}</robotNamespace>
     </plugin>
 </gazebo>
 
