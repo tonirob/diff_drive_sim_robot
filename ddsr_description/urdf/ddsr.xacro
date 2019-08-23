@@ -45,10 +45,10 @@
 </material>
 
 
-
 <!-- Extra definitions for gazebo simulation  -->
-<!-- <xacro:include filename="$(find rob1500_gazebo)/gazebo/rob1500.gazebo" /> -->
-<!-- <xacro:gazebo_include gazebo_namespace="$(arg namespace)" /> -->
+<xacro:include filename="$(find ddsr_gazebo)/gazebo/ddsr.gazebo" />
+<xacro:gazebo_include gazebo_namespace="$(arg namespace)" />
+
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~ PLATFORM ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -94,7 +94,9 @@
 	</inertial>
 </link>
 
+
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~ DRIVE WHEELS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
 <joint name="$platform_2_left_wheel" type="continuous" >
 	<parent link="platform"/>
 	<child link="left_wheel"/>
@@ -163,8 +165,31 @@
 	</inertial>
 </link>
 
+<transmission name="$platform_2_left_wheel_transmission">
+	<type>transmission_interface/SimpleTransmission</type>
+	<joint name="platform_2_left_wheel">
+		<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+	</joint>
+	<actuator name="left_wheel_motor">
+		<hardwareInterface>EffortJointInterface</hardwareInterface>
+		<mechanicalReduction>30</mechanicalReduction>
+	</actuator>
+</transmission>
+<transmission name="$platform_2_right_wheel_transmission">
+	<type>transmission_interface/SimpleTransmission</type>
+	<joint name="platform_2_right_wheel">
+		<hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+	</joint>
+	<actuator name="right_wheel_motor">
+		<hardwareInterface>EffortJointInterface</hardwareInterface>
+		<mechanicalReduction>30</mechanicalReduction>
+	</actuator>
+</transmission>
+
+
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~ CASTER WHEEL ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<joint name="$platform_2_caster_hinge_1" type="continuous" >
+
+<joint name="platform_2_caster_hinge_1" type="continuous" >
 	<parent link="platform"/>
 	<child link="caster_hinge_1"/>
 	<origin xyz="${base_length*0.4} 0 ${-base_height*0.5-0.01}" rpy="0 0 0"/>
@@ -198,7 +223,7 @@
 	</inertial>
 </link>
 
-<joint name="$caster_hinge_1_2_caster_hinge_2" type="fixed" >
+<joint name="caster_hinge_1_2_caster_hinge_2" type="fixed" >
 	<parent link="caster_hinge_1"/>
 	<child link="caster_hinge_2"/>
 	<origin xyz="${-0.04*0.707*0.5} 0 ${-0.01-0.04*0.707*0.5}" rpy="0 ${0.25*pi} 0"/>
@@ -229,7 +254,7 @@
 	</inertial>
 </link>
 
-<joint name="$caster_hinge_2_2_caster_wheel" type="continuous" >
+<joint name="caster_hinge_2_2_caster_wheel" type="continuous" >
 	<parent link="caster_hinge_2"/>
 	<child link="caster_wheel"/>
 	<origin xyz="0 0 ${-0.04*0.707*0.5}" rpy="-${0.5*pi} 0 0"/>
@@ -262,6 +287,28 @@
 			izz="${0.5*wheel_mass*0.5*wheel_radius*wheel_radius}" />
 	</inertial>
 </link>
+
+<!--  caster steering free transmission -->
+<transmission name="platform_2_caster_hinge_1_transmission">
+	<type>transmission_interface/SimpleTransmission</type>
+	<joint name="platform_2_caster_hinge_1">
+		<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+	</joint>
+	<actuator name="platform_2_caster_hinge_1_steering">
+		<mechanicalReduction>1</mechanicalReduction>
+	</actuator>
+</transmission>
+
+<!-- caster drive free transmission -->
+<transmission name="caster_hinge_2_2_caster_wheel_transmission">
+	<type>transmission_interface/SimpleTransmission</type>
+	<joint name="caster_hinge_2_2_caster_wheel">
+		<hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+	</joint>
+	<actuator name="caster_hinge_2_2_caster_driving">
+		<mechanicalReduction>1</mechanicalReduction>
+	</actuator>
+</transmission>
 
 
 </robot>
