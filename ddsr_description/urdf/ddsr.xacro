@@ -97,7 +97,7 @@
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~ DRIVE WHEELS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-<joint name="$platform_2_left_wheel" type="continuous" >
+<joint name="platform_2_left_wheel" type="continuous" >
 	<parent link="platform"/>
 	<child link="left_wheel"/>
 	<origin xyz="${-base_length*0.3} ${base_width*0.5} ${-base_height*0.5+wheel_radius-floor_clearance}" rpy="${-0.5*pi} 0 0"/>
@@ -131,7 +131,7 @@
 	</inertial>
 </link>
 
-<joint name="$platform_2_right_wheel" type="continuous" >
+<joint name="platform_2_right_wheel" type="continuous" >
 	<parent link="platform"/>
 	<child link="right_wheel"/>
 	<origin xyz="${-base_length*0.3} ${-base_width*0.5} ${-base_height*0.5+wheel_radius-floor_clearance}" rpy="${0.5*pi} 0 0"/>
