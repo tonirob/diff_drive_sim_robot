@@ -17,8 +17,8 @@
 
 <!-- user input dimensions  ( DEBUG: all mass values have been divided by 100 )  -->
 <xacro:property name="robot" value="ddsr" />
-<xacro:property name="base_length" value="1.0" />
-<xacro:property name="base_width" value="0.5" />
+<xacro:property name="base_length" value="0.8" />
+<xacro:property name="base_width" value="0.6" />
 <xacro:property name="base_height" value="0.2" />
 <xacro:property name="base_mass" value="300.0" />
 <xacro:property name="floor_clearance" value="0.08" />
@@ -63,12 +63,12 @@
 </link>
 
 <!-- Base Link. STL is scaled with te ratio between NEW/OLD dimensions -->
-<joint name="$footprint_2_base" type="fixed" >
+<joint name="$footprint_2_platform" type="fixed" >
 	<parent link="footprint"/>
-	<child link="base"/>
-	<origin xyz="0 0 ${floor_clearance+base_height*0.5}" rpy="0 0 0"/>
+	<child link="platform"/>
+	<origin xyz="${base_length*0.25} 0 ${floor_clearance+base_height*0.5}" rpy="0 0 0"/>
 </joint>
-<link name="base">
+<link name="platform">
 	<visual>
 		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<geometry>
@@ -95,10 +95,10 @@
 </link>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~ DRIVE WHEELS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<joint name="$base_2_left_wheel" type="continuous" >
-	<parent link="base"/>
+<joint name="$platform_2_left_wheel" type="continuous" >
+	<parent link="platform"/>
 	<child link="left_wheel"/>
-	<origin xyz="${-base_length*0.25} ${base_width*0.5} ${-base_height*0.5+wheel_radius-floor_clearance}" rpy="${-0.5*pi} 0 0"/>
+	<origin xyz="${-base_length*0.3} ${base_width*0.5} ${-base_height*0.5+wheel_radius-floor_clearance}" rpy="${-0.5*pi} 0 0"/>
 	<axis xyz="0 0 1"/>
 	<limit effort="99999" velocity="${20*pi}"/>
 	<dynamics friction="0.25" damping="0.05"/>
@@ -129,10 +129,10 @@
 	</inertial>
 </link>
 
-<joint name="$base_2_right_wheel" type="continuous" >
-	<parent link="base"/>
+<joint name="$platform_2_right_wheel" type="continuous" >
+	<parent link="platform"/>
 	<child link="right_wheel"/>
-	<origin xyz="${-base_length*0.25} ${-base_width*0.5} ${-base_height*0.5+wheel_radius-floor_clearance}" rpy="${0.5*pi} 0 0"/>
+	<origin xyz="${-base_length*0.3} ${-base_width*0.5} ${-base_height*0.5+wheel_radius-floor_clearance}" rpy="${0.5*pi} 0 0"/>
 	<axis xyz="0 0 1"/>
 	<limit effort="99999" velocity="${20*pi}"/>
 	<dynamics friction="0.25" damping="0.05"/>
@@ -164,15 +164,46 @@
 </link>
 
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~ CASTER WHEEL ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<joint name="$base_2_caster_hinge_1" type="continuous" >
-	<parent link="base"/>
+<joint name="$platform_2_caster_hinge_1" type="continuous" >
+	<parent link="platform"/>
 	<child link="caster_hinge_1"/>
-	<origin xyz="${base_length*0.4} 0 ${-base_height*0.5-0.02}" rpy="0 0 0"/>
+	<origin xyz="${base_length*0.4} 0 ${-base_height*0.5-0.01}" rpy="0 0 0"/>
 	<axis xyz="0 0 1"/>
 	<limit effort="100000." velocity="${2*pi}"/>
 	<dynamics friction="0.1" damping="0.01"/>
 </joint>
 <link name="caster_hinge_1">
+	<visual>
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<geometry>
+			<box size="0.02 0.02 0.02"/>
+		</geometry>
+		<material name="ddsr/red" />
+	</visual>
+	<collision>
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<geometry>
+			<box size="0.02 0.02 0.02"/>
+		</geometry>
+	</collision>
+	<inertial>
+		<mass value="1" />
+		<origin xyz="0 0 0" rpy="0 0 0"/>
+		<inertia ixx="${0.083*(0.02*0.02+0.02*0.02)}"
+			ixy="0.0"
+			ixz="0.0"
+			iyy="${0.083*(0.02*0.02+0.02*0.02)}"
+			iyz="0.0"
+			izz="${0.083*(0.02*0.02+0.02*0.02)}" />
+	</inertial>
+</link>
+
+<joint name="$caster_hinge_1_2_caster_hinge_2" type="fixed" >
+	<parent link="caster_hinge_1"/>
+	<child link="caster_hinge_2"/>
+	<origin xyz="${-0.04*0.707*0.5} 0 ${-0.01-0.04*0.707*0.5}" rpy="0 ${0.25*pi} 0"/>
+</joint>
+<link name="caster_hinge_2">
 	<visual>
 		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<geometry>
@@ -198,34 +229,37 @@
 	</inertial>
 </link>
 
-<joint name="$caster_hinge_1_2_caster_hinge_2" type="fixed" >
-	<parent link="caster_hinge_1"/>
-	<child link="caster_hinge_2"/>
-	<origin xyz="${-0.04*0.707*0.5} 0 ${-0.02-0.04*0.707*0.5}" rpy="0 ${0.25*pi} 0"/>
+<joint name="$caster_hinge_2_2_caster_wheel" type="continuous" >
+	<parent link="caster_hinge_2"/>
+	<child link="caster_wheel"/>
+	<origin xyz="0 0 ${-0.04*0.707*0.5}" rpy="-${0.5*pi} 0 0"/>
+	<axis xyz="0 0 1"/>
+	<limit effort="99999" velocity="${20*pi}"/>
+	<dynamics friction="0.25" damping="0.05"/>
 </joint>
-<link name="caster_hinge_2">
+<link name="caster_wheel">
 	<visual>
 		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<geometry>
-			<box size="0.02 0.02 0.04"/>
+			<cylinder length="${0.5*wheel_width}" radius="${floor_clearance-0.02-0.04*0.707}"/>
 		</geometry>
-		<material name="ddsr/red" />
+		<material name="ddsr/grey" />
 	</visual>
 	<collision>
 		<origin xyz="0 0 0" rpy="0 0 0"/>
 		<geometry>
-			<box size="0.02 0.02 0.04"/>
+			<cylinder length="${0.5*wheel_width}" radius="${floor_clearance-0.02-0.04*0.707}"/>
 		</geometry>
 	</collision>
 	<inertial>
-		<mass value="1" />
+		<mass value="${wheel_mass*0.5}" />
 		<origin xyz="0 0 0" rpy="0 0 0"/>
-		<inertia ixx="${0.083*(0.02*0.02+0.04*0.04)}"
+		<inertia ixx="${0.083*wheel_mass*0.5*(3*wheel_radius*wheel_radius+wheel_width*wheel_width)}"
 			ixy="0.0"
 			ixz="0.0"
-			iyy="${0.083*(0.02*0.02+0.04*0.04)}"
+			iyy="${0.083*wheel_mass*0.5*(3*wheel_radius*wheel_radius+wheel_width*wheel_width)}"
 			iyz="0.0"
-			izz="${0.083*(0.02*0.02+0.02*0.02)}" />
+			izz="${0.5*wheel_mass*0.5*wheel_radius*wheel_radius}" />
 	</inertial>
 </link>
 
