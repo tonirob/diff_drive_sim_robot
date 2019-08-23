@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<launch>
+
+	<!-- Input arguments -->
+	<arg name="rviz" default="true" /> <!-- Enable/disable rviz visualization -->
+	<arg name="namespace" default="ddsr" />
+	<arg name="gazebo_gui" default="true" />  <!-- Enable/disable Gazebo visualization -->
+	<arg name="world_name" default="ground_plane" /> <!-- world file name -->
+
+	<!-- Load joint controller configurations from YAML file to parameter server -->
+	<rosparam ns="$(arg namespace)" file="$(find ddsr_control)/config/control.yaml" command="load"/>
+
+	<!-- Launch gazebo simulation and load controllers -->
+	<include file="$(find ddsr_gazebo)/launch/gazebo.launch">
+		<arg name="rviz" value="$(arg rviz)"/>
+		<arg name="namespace" value="$(arg namespace)"/>
+		<arg name="gazebo_gui" value="$(arg gazebo_gui)"/>
+		<arg name="world_name" value="$(arg world_name)"/>
+	</include>
+
+	<!-- Load controllers -->
+	<node
+		pkg="controller_manager"
+		type="spawner"
+		name="controller_spawner"
+		respawn="false"
+		output="screen"
+		ns="$(arg namespace)"
+		args="wheel_state_controller
+			  diff_drive_controller
+			  caster_steer_controller
+			  caster_drive_controller">
+	</node>
+
+</launch>
