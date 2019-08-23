@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!-- Gazebo Simulated Rob1500 platform on a (simulated) world-->
+
+<launch>
+
+    <!-- Input arguments -->
+    <arg name="rviz" default="false" /> <!-- Enable/disable rviz visualization -->
+	<arg name="gazebo_gui" default="true" />  <!-- Enable/disable Gazebo visualization -->
+	<arg name="world_name" default="cubes" /> <!-- world file name -->
+
+    <!-- Launch a world in Gazebo simulator-->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find rob1500_gazebo)/worlds/$(arg world_name).world"/>
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="$(arg gazebo_gui)"/>
+        <arg name="recording" value="false"/>
+        <arg name="debug" value="false"/>
+    </include>
+
+    <!-- Spawn a robot into Gazebo (Gets robot_description from parameter server)-->
+    <node
+		launch-prefix="$(find rob1500_gazebo)/scripts/set_physical_parameters.sh"
+		pkg="gazebo_ros"
+      	type="spawn_model"
+  		name="spawn_model"
+      	args="-param robot_description -urdf -model rob1500 -x 0 -y 0 -z 0.1 -R 0.0 -P 0.0 -Y 0.0" >
+    </node>
+
+    <!-- Run rviz node -->
+    <group if="$(arg rviz)">
+        <node
+            pkg="rviz"
+            type="rviz"
+            name="rviz"
+			args="-d $(find rob1500_gazebo)/rviz/gazebo.rviz">
+        </node>
+    </group>
+
+</launch>
