@@ -13,7 +13,7 @@
 
 	<!-- Launch gazebo simulation and load controllers -->
 	<include file="$(find ddsr_gazebo)/launch/gazebo.launch">
-		<arg name="rviz" value="$(arg rviz)"/>
+		<arg name="rviz" value="false"/>
 		<arg name="namespace" value="$(arg namespace)"/>
 		<arg name="gazebo_gui" value="$(arg gazebo_gui)"/>
 		<arg name="world_name" value="$(arg world_name)"/>
@@ -32,5 +32,15 @@
 			  caster_steer_controller
 			  caster_drive_controller">
 	</node>
+
+	<!-- Run rviz node -->
+    <group if="$(arg rviz)">
+        <node
+            pkg="rviz"
+            type="rviz"
+            name="rviz"
+			args="-d $(find ddsr_control)/rviz/control.rviz">
+        </node>
+    </group>
 
 </launch>

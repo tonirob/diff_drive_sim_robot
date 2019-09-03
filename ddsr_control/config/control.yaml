@@ -17,6 +17,24 @@ diff_drive_controller:
     base_frame_id: footprint
     enable_odom_tf: True
     velocity_rolling_window_size: 5
+    
+    # Velocity and acceleration limits (whenever a min_* is unspecified, default to -max_*)
+    linear:
+        x:
+          has_velocity_limits    : true
+          max_velocity           : 1.0  # m/s
+          has_acceleration_limits: true
+          max_acceleration       : 1.5  # m/s^2
+          has_jerk_limits        : true
+          max_jerk               : 5.0  # m/s^3
+    angular:
+        z:
+          has_velocity_limits    : true
+          max_velocity           : 2.0  # rad/s
+          has_acceleration_limits: true
+          max_acceleration       : 3.0  # rad/s^2
+          has_jerk_limits        : true
+          max_jerk               : 4.0  # rad/s^3
 
 # Caster wheel hinges ---------------------------------------
 caster_steer_controller:
