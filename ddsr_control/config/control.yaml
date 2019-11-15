@@ -41,8 +41,10 @@ ddsr:
   caster_steer_controller:
     type: effort_controllers/JointEffortController
     joint: platform_2_caster_hinge_1
+    pid: {p: 13, i: 0.1, d: 0.0}
 
   # Caster wheel drive ---------------------------------------
   caster_drive_controller:
     type: effort_controllers/JointEffortController
     joint: caster_hinge_2_2_caster_wheel
+    pid: {p: 13, i: 0.1, d: 0.0}
