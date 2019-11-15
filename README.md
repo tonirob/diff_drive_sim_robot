@@ -6,13 +6,17 @@ Simulated differential drive platform for testing purposes.
 
 1. Description package: formal geometric description at .xacro file
 
-1. Description package: add inertial tag at links and limit and dynamics tags at joints
+1. Description package: add inertial tag at links
 
-1. Description package: For each joint, add a corresponding transmission tag
+1. Description package: add limit and dynamics tags at non-fixed joints
+
+1. Description package: For each non-fixed joint, add a corresponding transmission tag
 
 1. Gazebo package: description extensions at .gazebo file for each link described at xacro file
 
-1. Gazebo package: gazebo plugins, to compute and expose simulated sensors, actuated joints and ground truth.
+1. Gazebo package: description extensions at .gazebo file for each non-fixed joint described at xacro file
+
+1. Gazebo package: gazebo plugins, to endorse the robot with simulated sensors, hardware interfaces to actuated joints and ground truth.
 
 1. Gazebo package: world model edition
 
