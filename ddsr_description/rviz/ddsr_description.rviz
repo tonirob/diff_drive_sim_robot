@@ -3,8 +3,7 @@ Panels:
     Help Height: 85
     Name: Displays
     Property Tree Widget:
-      Expanded:
-        - /TF1
+      Expanded: ~
       Splitter Ratio: 0.656000018119812
     Tree Height: 643
   - Class: rviz/Selection
@@ -96,7 +95,7 @@ Visualization Manager:
               {}
       Update Interval: 0
       Value: true
-    - Alpha: 0.5
+    - Alpha: 0.4000000059604645
       Class: rviz/RobotModel
       Collision Enabled: false
       Enabled: true
@@ -142,7 +141,7 @@ Visualization Manager:
           Show Trail: false
           Value: true
       Name: RobotModel
-      Robot Description: robot_description
+      Robot Description: ddsr/robot_description
       TF Prefix: ""
       Update Interval: 0
       Value: true
@@ -175,7 +174,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/XYOrbit
-      Distance: 1.2282747030258179
+      Distance: 1.2702326774597168
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -190,10 +189,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.11979753524065018
+      Pitch: 0.5047972798347473
       Target Frame: <Fixed Frame>
       Value: XYOrbit (rviz)
-      Yaw: 5.508581161499023
+      Yaw: 5.223577976226807
     Saved: ~
 Window Geometry:
   Displays:
