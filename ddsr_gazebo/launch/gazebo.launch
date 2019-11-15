@@ -3,15 +3,18 @@
 <launch>
 
     <!-- Input arguments -->
-    <arg name="rviz" default="true" /> <!-- Enable/disable rviz visualization -->
 	<arg name="namespace" default="ddsr" />
-	<arg name="gazebo_gui" default="true" />  <!-- Enable/disable Gazebo visualization -->
+	<arg name="run_joint_state_publisher" default="true" doc="Run joint state publisher"/>
 	<arg name="world_name" default="ground_plane" /> <!-- world file name -->
+	<arg name="gazebo_gui" default="true" />  <!-- Enable/disable Gazebo visualization -->
+	<arg name="rviz" default="true" /> <!-- Enable/disable rviz visualization -->
 
 	<!-- Robot description -->
 	<include file="$(find ddsr_description)/launch/description.launch">
-		<arg name="rviz" value="false"/>
 		<arg name="namespace" value="$(arg namespace)"/>
+		<arg name="run_joint_state_publisher" value="$(arg run_joint_state_publisher)"/>
+		<arg name="joint_state_gui" value="false"/>
+		<arg name="rviz" value="false"/>
 	</include>
 
     <!-- Launch a world in Gazebo simulator-->
@@ -27,10 +30,11 @@
     <!-- Spawn a robot into Gazebo (Gets robot_description from parameter server)-->
     <node
 		launch-prefix="$(find ddsr_gazebo)/scripts/set_physical_parameters.sh"
+		ns="$(arg namespace)"
 		pkg="gazebo_ros"
       	type="spawn_model"
   		name="spawn_model"
-      	args="-param robot_description -urdf -model ddsr -x 0 -y 0 -z 0.01 -R 0.0 -P 0.0 -Y 0.0" >
+      	args="-robot_namespace $(arg namespace) -param robot_description -urdf -model ddsr -x 0 -y 0 -z 0.01 -R 0.0 -P 0.0 -Y 0.0" >
     </node>
 
     <!-- Run rviz node -->
